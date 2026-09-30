@@ -1,0 +1,6 @@
+2026-09-30 20:58:09,991 - ERROR - API error: The currency AAA is unknown
+2026-09-30 20:59:24,298 - ERROR - API error: The currency AAA is unknown
+2026-09-30 21:48:07,857 - ERROR - Usage: python currency_exchange_rate.py <from> <to> <date>
+2026-09-30 21:48:17,864 - ERROR - Usage: python currency_exchange_rate.py <from> <to> <date>
+2026-09-30 21:48:44,292 - ERROR - Usage: python currency_exchange_rate.py <from> <to> <date>
+2026-09-30 21:51:06,266 - ERROR - Request error: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /?from=USD&to=EUR&date=2025-05-01 (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8080): Failed to establish a new connection: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение"))
