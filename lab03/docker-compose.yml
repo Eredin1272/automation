@@ -1,0 +1,10 @@
+services:
+  currency-cron:
+    build: . # Сообрать образ из Dockerfile в текущей директории
+    container_name: currency-cron
+    restart: unless-stopped # Автоматически перезапускать контейнер, если он остановился
+    environment:
+      - TZ=Europe/Chisinau
+    extra_hosts: # Обеспечить доступ к хосту из контейнера по имени ...
+      - "host.docker.internal:host-gateway"
+    

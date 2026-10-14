@@ -1,0 +1,13 @@
+# Каждый день в 06:00 - MDL в EUR за вчера
+0 6 * * * root /usr/local/bin/python /app/currency_exchange_rate.py MDL EUR $(date -d "yesterday" + \%Y-\%m-\%d) >> /var/log/cron.log 2>&1
+
+# Каждую Пятницу в 17:00 - MDL в EUR за последние 7 дней
+0 17 * * 5 root /usr/local/bin/python /app/currency_exchange_rate.py MDL USD $(date -d "7 days ago" +\%Y-\%m-\%d) >> /var/log/cron.log 2>&1
+
+# root - запуск от имени пользователя
+# /usr/local/bin/python - Интерпритатор пайтон
+# /app/currency_exchange_rate.py - путь к скрипту внутри Docker
+# $(date -d "7 days ago" +\%Y-\%m-\%d) - автоматическое вычисление вчерашней даты
+# >> /var/log/cron.log - добавляет вывод в файл журнала
+
+# \% - экранируем % т.к в Cron оно имеет спец. значение
