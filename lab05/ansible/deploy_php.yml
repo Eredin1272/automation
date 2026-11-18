@@ -1,0 +1,52 @@
+---
+- name: Deploy PHP application
+  hosts: test_servers
+  become: true
+
+  vars:
+    project_source: "{{ playbook_dir }}/../../php-project"
+
+  tasks:
+    - name: Copy application files
+      ansible.builtin.copy:
+        src: "{{ project_source }}/site/"
+        dest: /var/www/php-project/
+        owner: root
+        group: www-data
+        mode: preserve
+        directory_mode: "0755"
+
+    - name: Create database directory
+      ansible.builtin.file:
+        path: /var/www/db
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: "0755"
+
+    - name: Initialize application database
+      ansible.builtin.command:
+        argv:
+          - sqlite3
+          - -bail
+          - /var/www/db/db.sqlite
+        stdin: "{{ lookup('ansible.builtin.file', project_source ~ '/sql/schema.sql') }}"
+        creates: /var/www/db/db.sqlite
+
+    - name: Set database permissions
+      ansible.builtin.file:
+        path: /var/www/db/db.sqlite
+        owner: www-data
+        group: www-data
+        mode: "0640"
+
+    - name: Start Apache
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        use: sysvinit
+
+    - name: Check application response
+      ansible.builtin.uri:
+        url: http://127.0.0.1/
+        status_code: 200
