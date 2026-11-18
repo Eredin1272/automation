@@ -1,0 +1,14 @@
+FROM ubuntu:24.04
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ansible-core openssh-server openssh-client \
+        openjdk-21-jre-headless git ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -f /etc/ssh/ssh_host_*_key /etc/ssh/ssh_host_*_key.pub \
+    && useradd -m -s /bin/bash jenkins \
+    && install -d -o jenkins -g jenkins /home/jenkins/agent
+
+COPY --chmod=755 start-ansible-agent.sh /usr/local/bin/start-ansible-agent
+
+CMD ["/usr/local/bin/start-ansible-agent"]
